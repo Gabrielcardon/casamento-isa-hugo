@@ -1,0 +1,46 @@
+rules_version = '2';
+
+// Cole estas regras em: Firebase Console → Firestore Database → Rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Ajuste o e-mail do admin para o que você criou no Authentication
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.email == 'SEU_EMAIL_ADMIN@exemplo.com';
+    }
+
+    match /gifts/{giftId} {
+      // Qualquer convidado pode ler a lista
+      allow read: if true;
+
+      // Convidados só podem "reservar" presentes disponíveis
+      // (não podem marcar pixPaid como true)
+      allow update: if !isAdmin()
+        && resource.data.status == 'available'
+        && request.resource.data.status == 'reserved'
+        && request.resource.data.diff(resource.data).changedKeys()
+            .hasOnly(['status', 'reservedBy', 'reservedAt', 'fulfillmentMethod', 'pixPaid'])
+        && request.resource.data.reservedBy is string
+        && request.resource.data.reservedBy.size() > 1
+        && request.resource.data.reservedBy.size() <= 80
+        && request.resource.data.fulfillmentMethod in ['store', 'pix']
+        && request.resource.data.pixPaid == false
+        && request.resource.data.name == resource.data.name
+        && request.resource.data.description == resource.data.description
+        && request.resource.data.price == resource.data.price
+        && request.resource.data.imageUrl == resource.data.imageUrl
+        && request.resource.data.category == resource.data.category
+        && request.resource.data.link == resource.data.link
+        && request.resource.data.order == resource.data.order;
+
+      // Admin gerencia tudo (incluindo marcar Pix como pago)
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin();
+    }
+  }
+}
