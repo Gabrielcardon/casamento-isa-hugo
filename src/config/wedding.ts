@@ -2,14 +2,14 @@
  * Personalize os dados do casamento e do Pix aqui.
  */
 export const wedding = {
-  partnerOne: 'Isa',
+  partnerOne: 'Isabella',
   partnerTwo: 'Hugo',
-  dateLabel: '28 de novembro de 2026',
+  dateLabel: '28.11.2026',
   dateISO: '2026-11-28',
-  city: 'Curitiba',
-  venue: '',
+  city: 'Villa do Rocio',
+  venue: 'Villa do Rocio',
   message:
-    'Sua presença já é o nosso maior presente. Se quiser nos presentear de outra forma, escolhemos com carinho esta lista para o nosso novo lar.',
+    'A maior alegria para nós é celebrar este dia com as pessoas que amamos. Se desejar nos presentear, preparamos esta lista com carinho para nos ajudar a dar início ao nosso novo lar. Agradecemos por fazer parte deste momento tão especial!',
 
   /**
    * Dados do Pix — preencha com os dados reais dos noivos.
@@ -21,7 +21,7 @@ export const wedding = {
    *   (ex.: '/pix-qr.png') e preencha o caminho; tem prioridade sobre o QR gerado
    */
   pixKey: 'chave-pix-dos-noivos',
-  pixName: 'Isa e Hugo',
+  pixName: 'Isabella e Hugo',
   pixCopiaECola: '',
   pixQrImage: '',
 } as const

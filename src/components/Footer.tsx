@@ -9,7 +9,9 @@ export function Footer() {
       </p>
       <p className="mt-4 font-sans text-sm tracking-wide">
         {wedding.dateLabel}
-        {wedding.city ? ` · ${wedding.city}` : ''}
+        {(wedding.venue || wedding.city)
+          ? ` • ${wedding.venue || wedding.city}`
+          : ''}
       </p>
       {wedding.pixKey && (
         <p className="mx-auto mt-8 max-w-md text-sm text-mist/60">

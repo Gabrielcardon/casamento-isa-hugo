@@ -100,11 +100,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'store'}
                     onChange={() => setMethod('store')}
-                    title="Comprar no site / loja"
+                    title="Receberemos o Presente"
                     description={
                       gift.link
-                        ? 'Reservamos o item e abrimos a sugestão de loja para você.'
-                        : 'Você compra o presente e entrega/envia aos noivos.'
+                        ? 'Compre na loja (ou pelo link de referência) e entregue ou envie para nossa casa.'
+                        : 'Compre na loja de sua preferência e entregue pessoalmente ou envie para nossa casa.'
                     }
                   />
                   <MethodOption
@@ -112,8 +112,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'pix'}
                     onChange={() => setMethod('pix')}
-                    title="Enviar valor via Pix"
-                    description="Reservamos o item e mostramos o QR Code para o depósito."
+                    title="Contribuir com o valor"
+                    description="Contribua com o valor do presente via PIX. Mostramos o QR Code após a reserva."
                   />
                 </div>
               </fieldset>

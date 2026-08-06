@@ -39,27 +39,51 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
     })
   }, [gifts, filter, category])
 
-  const availableCount = gifts.filter((g) => g.status === 'available').length
-
   return (
     <section id="presentes" className="bg-section-wash px-6 pb-28 md:px-10">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-xl">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.3em] text-moss">
-            Lista de presentes
-          </p>
-          <h2 className="mt-4 font-display text-4xl font-medium tracking-tight text-forest md:text-5xl">
-            Escolha com o coração
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="font-display text-4xl font-medium tracking-tight text-forest md:text-5xl">
+            Nossa Lista de Presentes
           </h2>
-          <p className="mt-4 text-muted">
-            {loading
-              ? 'Carregando a lista…'
-              : `${availableCount} ${availableCount === 1 ? 'presente disponível' : 'presentes disponíveis'} de ${gifts.length}. Você pode comprar na loja ou enviar o valor via Pix.`}
+          <p className="mt-5 text-muted leading-relaxed text-balance">
+            Selecionamos alguns itens que farão parte do início do nosso novo
+            lar. Para tornar tudo mais prático, você pode escolher o presente e
+            a forma de presentear que preferir.
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-y border-sage/25 py-5 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap gap-2">
+        <div className="mx-auto mt-12 grid max-w-3xl gap-8 sm:grid-cols-2">
+          <div className="text-center sm:text-left">
+            <p className="font-sans text-sm font-semibold tracking-wide text-forest">
+              Receberemos o Presente
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Compre o item na loja de sua preferência (ou utilize nosso link de
+              referência) e entregue pessoalmente ou envie diretamente para
+              nossa casa.
+            </p>
+          </div>
+          <div className="text-center sm:text-left">
+            <p className="font-sans text-sm font-semibold tracking-wide text-forest">
+              Contribuir com o valor
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Selecione o presente desejado e contribua com o valor
+              correspondente via PIX.
+            </p>
+          </div>
+        </div>
+
+        {!loading && (
+          <p className="mt-10 text-center text-sm text-muted">
+            {gifts.filter((g) => g.status === 'available').length} de{' '}
+            {gifts.length} disponíveis
+          </p>
+        )}
+
+        <div className="mt-8 flex flex-col gap-4 border-y border-sage/25 py-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap justify-center gap-2 md:justify-start">
             {(
               [
                 ['all', 'Todos'],
@@ -83,7 +107,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
           </div>
 
           {categories.length > 0 && (
-            <label className="flex items-center gap-3 text-sm text-muted">
+            <label className="flex items-center justify-center gap-3 text-sm text-muted md:justify-end">
               Categoria
               <select
                 value={category}
@@ -145,7 +169,9 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
                         <span className="absolute inset-x-0 bottom-0 bg-forest-deep/75 px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-champagne-soft">
                           Já reservado
                           {gift.fulfillmentMethod === 'pix' ? ' · Pix' : ''}
-                          {gift.fulfillmentMethod === 'store' ? ' · Loja' : ''}
+                          {gift.fulfillmentMethod === 'store'
+                            ? ' · Presente físico'
+                            : ''}
                         </span>
                       )}
                     </div>
