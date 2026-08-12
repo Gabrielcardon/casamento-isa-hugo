@@ -70,7 +70,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
             </p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
               Selecione o presente desejado e contribua com o valor
-              correspondente via PIX.
+              correspondente via PIX ou cartão (link Mercado Pago).
             </p>
           </div>
         </div>
@@ -169,6 +169,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
                         <span className="absolute inset-x-0 bottom-0 bg-forest-deep/75 px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-champagne-soft">
                           Já reservado
                           {gift.fulfillmentMethod === 'pix' ? ' · Pix' : ''}
+                          {gift.fulfillmentMethod === 'card' ? ' · Cartão' : ''}
                           {gift.fulfillmentMethod === 'store'
                             ? ' · Presente físico'
                             : ''}

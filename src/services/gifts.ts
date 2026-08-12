@@ -18,6 +18,7 @@ import type {
   GiftInput,
   ReservePayload,
 } from '../types/gift'
+import { isFulfillmentMethod } from '../types/gift'
 
 const COLLECTION = 'gifts'
 const STORAGE_KEY = 'casamento-demo-gifts-v2'
@@ -34,10 +35,9 @@ function normalizeGift(partial: Partial<Gift> & { id: string }): Gift {
     status: partial.status === 'reserved' ? 'reserved' : 'available',
     reservedBy: partial.reservedBy ?? null,
     reservedAt: partial.reservedAt ?? null,
-    fulfillmentMethod:
-      partial.fulfillmentMethod === 'store' || partial.fulfillmentMethod === 'pix'
-        ? partial.fulfillmentMethod
-        : null,
+    fulfillmentMethod: isFulfillmentMethod(partial.fulfillmentMethod)
+      ? partial.fulfillmentMethod
+      : null,
     pixPaid: Boolean(partial.pixPaid),
     order: Number(partial.order ?? 0),
   }
@@ -108,7 +108,7 @@ export async function reserveGift(
 ): Promise<void> {
   const name = payload.reservedBy.trim()
   if (name.length < 2) throw new Error('Informe seu nome para reservar o presente.')
-  if (payload.fulfillmentMethod !== 'store' && payload.fulfillmentMethod !== 'pix') {
+  if (!isFulfillmentMethod(payload.fulfillmentMethod)) {
     throw new Error('Escolha como deseja presentear.')
   }
 

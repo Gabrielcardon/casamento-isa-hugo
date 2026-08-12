@@ -18,11 +18,12 @@ export function HomePage() {
     method: FulfillmentMethod,
   ) {
     await reserveGift(giftId, { reservedBy, fulfillmentMethod: method })
-    setToast(
-      method === 'pix'
-        ? 'Presente reservado. Finalize o Pix pelo QR Code. Obrigado!'
-        : 'Presente reservado com sucesso. Muito obrigado!',
-    )
+    const messages: Record<FulfillmentMethod, string> = {
+      pix: 'Presente reservado. Finalize o Pix pelo QR Code. Obrigado!',
+      card: 'Presente reservado. Finalize no Mercado Pago (PoC). Obrigado!',
+      store: 'Presente reservado com sucesso. Muito obrigado!',
+    }
+    setToast(messages[method])
     window.setTimeout(() => setToast(null), 4000)
   }
 

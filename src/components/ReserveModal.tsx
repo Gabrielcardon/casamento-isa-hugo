@@ -1,5 +1,10 @@
 import { useId, useState } from 'react'
+import { hasMercadoPagoLink } from '../config/wedding'
 import type { FulfillmentMethod, Gift } from '../types/gift'
+import {
+  MercadoPagoLinkPanel,
+  openMercadoPagoLink,
+} from './MercadoPagoLinkPanel'
 import { PixPayment } from './PixPayment'
 
 interface ReserveModalProps {
@@ -14,7 +19,9 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
   const [method, setMethod] = useState<FulfillmentMethod | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [step, setStep] = useState<'form' | 'pix-done' | 'store-done'>('form')
+  const [step, setStep] = useState<
+    'form' | 'pix-done' | 'card-done' | 'store-done'
+  >('form')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,6 +35,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
       await onConfirm(name, method)
       if (method === 'pix') {
         setStep('pix-done')
+      } else if (method === 'card') {
+        setStep('card-done')
+        if (hasMercadoPagoLink()) {
+          openMercadoPagoLink()
+        }
       } else {
         setStep('store-done')
         if (gift.link) {
@@ -112,8 +124,16 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'pix'}
                     onChange={() => setMethod('pix')}
-                    title="Contribuir com o valor"
+                    title="Contribuir via PIX"
                     description="Contribua com o valor do presente via PIX. Mostramos o QR Code após a reserva."
+                  />
+                  <MethodOption
+                    id={`${id}-card`}
+                    name={`${id}-method`}
+                    checked={method === 'card'}
+                    onChange={() => setMethod('card')}
+                    title="Cartão via Mercado Pago"
+                    description="PoC: abriremos um link fixo do MP (sem valor automático por presente)."
                   />
                 </div>
               </fieldset>
@@ -121,9 +141,18 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               {method === 'pix' && (
                 <div className="border border-sage/25 bg-white/50 p-4">
                   <p className="mb-4 text-center text-xs text-muted">
-                    Após confirmar, o QR fica disponível. Confira o valor sugerido:
+                    Após confirmar, o QR fica disponível. Valor sugerido:
                   </p>
                   <PixPayment amount={gift.price} giftName={gift.name} compact />
+                </div>
+              )}
+
+              {method === 'card' && (
+                <div className="border border-sage/25 bg-white/50 p-4">
+                  <MercadoPagoLinkPanel
+                    amount={gift.price}
+                    giftName={gift.name}
+                  />
                 </div>
               )}
 
@@ -181,6 +210,41 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               type="button"
               onClick={onClose}
               className="mt-6 w-full bg-forest px-6 py-3 text-sm font-medium text-linen hover:bg-moss"
+            >
+              Concluir
+            </button>
+          </div>
+        )}
+
+        {step === 'card-done' && (
+          <div className="text-center">
+            <p className="font-sans text-xs uppercase tracking-[0.25em] text-moss">
+              Reserva feita
+            </p>
+            <h3
+              id={`${id}-title`}
+              className="mt-2 font-display text-3xl font-medium text-forest"
+            >
+              Obrigado, {name.trim().split(' ')[0]}!
+            </h3>
+            <p className="mt-2 text-sm text-muted">
+              O presente está reservado. Finalize o pagamento no Mercado Pago
+              com o valor de{' '}
+              <strong className="text-forest">
+                {gift.price.toLocaleString('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL',
+                })}
+              </strong>
+              .
+            </p>
+            <div className="mt-6 border border-sage/25 bg-white/60 p-4">
+              <MercadoPagoLinkPanel amount={gift.price} giftName={gift.name} />
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 w-full border border-sage/40 px-6 py-3 text-sm font-medium text-forest hover:bg-mist"
             >
               Concluir
             </button>

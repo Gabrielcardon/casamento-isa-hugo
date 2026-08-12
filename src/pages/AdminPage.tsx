@@ -11,6 +11,7 @@ import {
   setPixPaid,
 } from '../services/gifts'
 import type { Gift, GiftInput } from '../types/gift'
+import { isPaymentFulfillment } from '../types/gift'
 
 const emptyForm: GiftInput = {
   name: '',
@@ -29,8 +30,13 @@ function methodLabel(gift: Gift): string {
       ? `Pix · pago · ${gift.reservedBy ?? '—'}`
       : `Pix · aguardando pagamento · ${gift.reservedBy ?? '—'}`
   }
+  if (gift.fulfillmentMethod === 'card') {
+    return gift.pixPaid
+      ? `Cartão (MP) · pago · ${gift.reservedBy ?? '—'}`
+      : `Cartão (MP) · aguardando · ${gift.reservedBy ?? '—'}`
+  }
   if (gift.fulfillmentMethod === 'store') {
-    return `Loja / site · ${gift.reservedBy ?? '—'}`
+    return `Presente físico · ${gift.reservedBy ?? '—'}`
   }
   return `Reservado por ${gift.reservedBy ?? '—'}`
 }
@@ -45,11 +51,17 @@ export function AdminPage() {
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
 
-  const pixPending = gifts.filter(
-    (g) => g.status === 'reserved' && g.fulfillmentMethod === 'pix' && !g.pixPaid,
+  const paymentPending = gifts.filter(
+    (g) =>
+      g.status === 'reserved' &&
+      isPaymentFulfillment(g.fulfillmentMethod) &&
+      !g.pixPaid,
   )
-  const pixPaidList = gifts.filter(
-    (g) => g.status === 'reserved' && g.fulfillmentMethod === 'pix' && g.pixPaid,
+  const paymentPaidList = gifts.filter(
+    (g) =>
+      g.status === 'reserved' &&
+      isPaymentFulfillment(g.fulfillmentMethod) &&
+      g.pixPaid,
   )
 
   async function handleLogin(e: FormEvent) {
@@ -177,32 +189,39 @@ export function AdminPage() {
           </p>
         )}
 
-        {/* Resumo Pix */}
+        {/* Resumo pagamentos (Pix + cartão MP) */}
         <section className="grid gap-4 sm:grid-cols-2">
           <div className="border border-champagne/40 bg-champagne/10 px-5 py-4">
             <p className="text-xs uppercase tracking-[0.2em] text-moss">
-              Pix aguardando
+              Aguardando pagamento
             </p>
-            <p className="mt-1 font-display text-3xl text-forest">{pixPending.length}</p>
-            <p className="text-sm text-muted">reservas para confirmar pagamento</p>
+            <p className="mt-1 font-display text-3xl text-forest">
+              {paymentPending.length}
+            </p>
+            <p className="text-sm text-muted">Pix ou cartão (Mercado Pago)</p>
           </div>
           <div className="border border-sage/30 bg-white/50 px-5 py-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-moss">Pix confirmados</p>
-            <p className="mt-1 font-display text-3xl text-forest">{pixPaidList.length}</p>
-            <p className="text-sm text-muted">pagamentos marcados como recebidos</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-moss">
+              Pagamentos confirmados
+            </p>
+            <p className="mt-1 font-display text-3xl text-forest">
+              {paymentPaidList.length}
+            </p>
+            <p className="text-sm text-muted">marcados como recebidos</p>
           </div>
         </section>
 
-        {pixPending.length > 0 && (
+        {paymentPending.length > 0 && (
           <section>
             <h2 className="font-display text-2xl text-forest">
-              Confirmar pagamentos Pix
+              Confirmar pagamentos
             </h2>
             <p className="mt-2 text-sm text-muted">
-              Quando o valor chegar na conta, marque como pago.
+              Pix ou cartão (PoC link fixo do MP). Quando o valor chegar, marque
+              como pago.
             </p>
             <ul className="mt-6 divide-y divide-sage/25 border border-sage/25">
-              {pixPending.map((gift) => (
+              {paymentPending.map((gift) => (
                 <li
                   key={gift.id}
                   className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
@@ -211,6 +230,7 @@ export function AdminPage() {
                     <p className="font-medium text-forest">{gift.name}</p>
                     <p className="text-sm text-muted">
                       {gift.reservedBy} ·{' '}
+                      {gift.fulfillmentMethod === 'card' ? 'Cartão MP' : 'Pix'} ·{' '}
                       {gift.price.toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',
@@ -335,19 +355,26 @@ export function AdminPage() {
                     })}{' '}
                     · {methodLabel(gift)}
                   </p>
-                  {gift.status === 'reserved' && gift.fulfillmentMethod === 'pix' && (
+                  {gift.status === 'reserved' &&
+                    isPaymentFulfillment(gift.fulfillmentMethod) && (
                     <p
                       className={`mt-1 text-xs font-medium ${
                         gift.pixPaid ? 'text-moss' : 'text-amber-800'
                       }`}
                     >
-                      {gift.pixPaid ? 'Pix confirmado' : 'Aguardando confirmação do Pix'}
+                      {gift.pixPaid
+                        ? gift.fulfillmentMethod === 'card'
+                          ? 'Cartão MP confirmado'
+                          : 'Pix confirmado'
+                        : gift.fulfillmentMethod === 'card'
+                          ? 'Aguardando pagamento (Mercado Pago)'
+                          : 'Aguardando confirmação do Pix'}
                     </p>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {gift.status === 'reserved' &&
-                    gift.fulfillmentMethod === 'pix' &&
+                    isPaymentFulfillment(gift.fulfillmentMethod) &&
                     !gift.pixPaid && (
                       <button
                         type="button"
@@ -358,7 +385,7 @@ export function AdminPage() {
                       </button>
                     )}
                   {gift.status === 'reserved' &&
-                    gift.fulfillmentMethod === 'pix' &&
+                    isPaymentFulfillment(gift.fulfillmentMethod) &&
                     gift.pixPaid && (
                       <button
                         type="button"

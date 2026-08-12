@@ -28,7 +28,7 @@ service cloud.firestore {
         && request.resource.data.reservedBy is string
         && request.resource.data.reservedBy.size() > 1
         && request.resource.data.reservedBy.size() <= 80
-        && request.resource.data.fulfillmentMethod in ['store', 'pix']
+        && request.resource.data.fulfillmentMethod in ['store', 'pix', 'card']
         && request.resource.data.pixPaid == false
         && request.resource.data.name == resource.data.name
         && request.resource.data.description == resource.data.description

@@ -1,7 +1,7 @@
 export type GiftStatus = 'available' | 'reserved'
 
 /** Como o convidado pretende cumprir o presente */
-export type FulfillmentMethod = 'store' | 'pix'
+export type FulfillmentMethod = 'store' | 'pix' | 'card'
 
 export interface Gift {
   id: string
@@ -16,7 +16,7 @@ export interface Gift {
   reservedAt: string | null
   /** null enquanto disponível */
   fulfillmentMethod: FulfillmentMethod | null
-  /** Só faz sentido quando fulfillmentMethod === 'pix' */
+  /** Pix ou cartão (MP) — admin confirma o recebimento */
   pixPaid: boolean
   order: number
 }
@@ -31,4 +31,14 @@ export type GiftInput = Omit<
 export interface ReservePayload {
   reservedBy: string
   fulfillmentMethod: FulfillmentMethod
+}
+
+export function isFulfillmentMethod(v: unknown): v is FulfillmentMethod {
+  return v === 'store' || v === 'pix' || v === 'card'
+}
+
+export function isPaymentFulfillment(
+  method: FulfillmentMethod | null,
+): method is 'pix' | 'card' {
+  return method === 'pix' || method === 'card'
 }
