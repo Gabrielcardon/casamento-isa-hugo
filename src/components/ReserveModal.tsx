@@ -37,8 +37,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
         setStep('pix-done')
       } else if (method === 'card') {
         setStep('card-done')
-        if (hasMercadoPagoLink()) {
-          openMercadoPagoLink()
+        if (hasMercadoPagoLink(gift.mercadoPagoLink)) {
+          openMercadoPagoLink(gift.mercadoPagoLink)
         }
       } else {
         setStep('store-done')
@@ -133,7 +133,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     checked={method === 'card'}
                     onChange={() => setMethod('card')}
                     title="Cartão via Mercado Pago"
-                    description="PoC: abriremos um link fixo do MP (sem valor automático por presente)."
+                    description={
+                      gift.mercadoPagoLink?.startsWith('http')
+                        ? 'Abriremos o link deste presente (valor já definido no MP).'
+                        : 'Abriremos o link geral do MP — informe o valor do presente no checkout.'
+                    }
                   />
                 </div>
               </fieldset>
@@ -152,6 +156,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                   <MercadoPagoLinkPanel
                     amount={gift.price}
                     giftName={gift.name}
+                    giftMercadoPagoLink={gift.mercadoPagoLink}
                   />
                 </div>
               )}
@@ -239,7 +244,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               .
             </p>
             <div className="mt-6 border border-sage/25 bg-white/60 p-4">
-              <MercadoPagoLinkPanel amount={gift.price} giftName={gift.name} />
+              <MercadoPagoLinkPanel
+                amount={gift.price}
+                giftName={gift.name}
+                giftMercadoPagoLink={gift.mercadoPagoLink}
+              />
             </div>
             <button
               type="button"

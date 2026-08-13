@@ -36,6 +36,8 @@ service cloud.firestore {
         && request.resource.data.imageUrl == resource.data.imageUrl
         && request.resource.data.category == resource.data.category
         && request.resource.data.link == resource.data.link
+        && request.resource.data.get('mercadoPagoLink', '')
+            == resource.data.get('mercadoPagoLink', '')
         && request.resource.data.order == resource.data.order;
 
       // Admin gerencia tudo (incluindo marcar Pix como pago)

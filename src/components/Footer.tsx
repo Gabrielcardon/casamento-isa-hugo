@@ -9,6 +9,8 @@ export function Footer() {
       </p>
       <p className="mt-4 font-sans text-sm tracking-wide">
         {wedding.dateLabel}
+        <span className="mx-1.5 opacity-50">•</span>
+        {wedding.timeLabel}
         {(wedding.venue || wedding.city)
           ? ` • ${wedding.venue || wedding.city}`
           : ''}

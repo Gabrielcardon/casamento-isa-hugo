@@ -11,6 +11,11 @@ export interface Gift {
   imageUrl: string
   category: string
   link: string
+  /**
+   * Link Mercado Pago deste presente (valor já definido no MP).
+   * Vazio = usa o link geral sem valor fixo em wedding.ts
+   */
+  mercadoPagoLink: string
   status: GiftStatus
   reservedBy: string | null
   reservedAt: string | null

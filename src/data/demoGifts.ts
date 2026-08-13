@@ -16,6 +16,7 @@ export const demoGifts: Gift[] = [
     reservedAt: null,
     fulfillmentMethod: null,
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 1,
   },
   {
@@ -32,6 +33,7 @@ export const demoGifts: Gift[] = [
     reservedAt: null,
     fulfillmentMethod: null,
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 2,
   },
   {
@@ -48,6 +50,7 @@ export const demoGifts: Gift[] = [
     reservedAt: new Date().toISOString(),
     fulfillmentMethod: 'pix',
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 3,
   },
   {
@@ -64,6 +67,7 @@ export const demoGifts: Gift[] = [
     reservedAt: null,
     fulfillmentMethod: null,
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 4,
   },
   {
@@ -80,6 +84,7 @@ export const demoGifts: Gift[] = [
     reservedAt: null,
     fulfillmentMethod: null,
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 5,
   },
   {
@@ -96,6 +101,7 @@ export const demoGifts: Gift[] = [
     reservedAt: new Date().toISOString(),
     fulfillmentMethod: 'store',
     pixPaid: false,
+    mercadoPagoLink: '',
     order: 6,
   },
 ]

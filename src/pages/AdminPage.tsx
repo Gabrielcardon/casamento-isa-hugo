@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { coupleDisplayName } from '../config/wedding'
 import { useAuth } from '../hooks/useAuth'
@@ -9,6 +9,7 @@ import {
   importDemoGifts,
   releaseGift,
   setPixPaid,
+  updateGift,
 } from '../services/gifts'
 import type { Gift, GiftInput } from '../types/gift'
 import { isPaymentFulfillment } from '../types/gift'
@@ -20,6 +21,7 @@ const emptyForm: GiftInput = {
   imageUrl: '',
   category: '',
   link: '',
+  mercadoPagoLink: '',
   order: 1,
 }
 
@@ -292,6 +294,18 @@ export function AdminPage() {
               onChange={(v) => setForm((f) => ({ ...f, link: v }))}
               className="sm:col-span-2"
             />
+            <Field
+              label="Link Mercado Pago deste presente (opcional — com valor já definido)"
+              value={form.mercadoPagoLink}
+              onChange={(v) => setForm((f) => ({ ...f, mercadoPagoLink: v }))}
+              className="sm:col-span-2"
+              placeholder="https://link.mercadopago.com.br/..."
+            />
+            <p className="text-xs text-muted sm:col-span-2 -mt-2">
+              Se ficar vazio, usa o link geral sem valor fixo (
+              casamentohugoeisa ). Crie no MP um link com o valor deste item e
+              cole aqui.
+            </p>
             <div className="sm:col-span-2">
               <label className="text-sm text-forest">Descrição</label>
               <textarea
@@ -341,80 +355,7 @@ export function AdminPage() {
           </h2>
           <ul className="mt-6 divide-y divide-sage/25 border border-sage/25">
             {gifts.map((gift) => (
-              <li
-                key={gift.id}
-                className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div>
-                  <p className="font-medium text-forest">{gift.name}</p>
-                  <p className="text-sm text-muted">
-                    {gift.category || 'Sem categoria'} ·{' '}
-                    {gift.price.toLocaleString('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}{' '}
-                    · {methodLabel(gift)}
-                  </p>
-                  {gift.status === 'reserved' &&
-                    isPaymentFulfillment(gift.fulfillmentMethod) && (
-                    <p
-                      className={`mt-1 text-xs font-medium ${
-                        gift.pixPaid ? 'text-moss' : 'text-amber-800'
-                      }`}
-                    >
-                      {gift.pixPaid
-                        ? gift.fulfillmentMethod === 'card'
-                          ? 'Cartão MP confirmado'
-                          : 'Pix confirmado'
-                        : gift.fulfillmentMethod === 'card'
-                          ? 'Aguardando pagamento (Mercado Pago)'
-                          : 'Aguardando confirmação do Pix'}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {gift.status === 'reserved' &&
-                    isPaymentFulfillment(gift.fulfillmentMethod) &&
-                    !gift.pixPaid && (
-                      <button
-                        type="button"
-                        className="bg-forest px-3 py-1.5 text-sm text-linen hover:bg-moss"
-                        onClick={() => setPixPaid(gift.id, true)}
-                      >
-                        Marcar pago
-                      </button>
-                    )}
-                  {gift.status === 'reserved' &&
-                    isPaymentFulfillment(gift.fulfillmentMethod) &&
-                    gift.pixPaid && (
-                      <button
-                        type="button"
-                        className="border border-sage/40 px-3 py-1.5 text-sm hover:bg-mist"
-                        onClick={() => setPixPaid(gift.id, false)}
-                      >
-                        Desfazer pago
-                      </button>
-                    )}
-                  {gift.status === 'reserved' && (
-                    <button
-                      type="button"
-                      className="border border-sage/40 px-3 py-1.5 text-sm hover:bg-mist"
-                      onClick={() => releaseGift(gift.id)}
-                    >
-                      Liberar
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    className="border border-red-200 px-3 py-1.5 text-sm text-red-900 hover:bg-red-50"
-                    onClick={() => {
-                      if (confirm(`Remover “${gift.name}”?`)) deleteGift(gift.id)
-                    }}
-                  >
-                    Remover
-                  </button>
-                </div>
-              </li>
+              <GiftAdminRow key={gift.id} gift={gift} />
             ))}
             {!loading && gifts.length === 0 && (
               <li className="px-4 py-8 text-center text-muted">
@@ -428,6 +369,128 @@ export function AdminPage() {
   )
 }
 
+function GiftAdminRow({ gift }: { gift: Gift }) {
+  const [mpLink, setMpLink] = useState(gift.mercadoPagoLink || '')
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    setMpLink(gift.mercadoPagoLink || '')
+  }, [gift.mercadoPagoLink])
+
+  async function saveMpLink() {
+    setSaving(true)
+    try {
+      await updateGift(gift.id, { mercadoPagoLink: mpLink.trim() })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <li className="flex flex-col gap-3 px-4 py-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="font-medium text-forest">{gift.name}</p>
+          <p className="text-sm text-muted">
+            {gift.category || 'Sem categoria'} ·{' '}
+            {gift.price.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })}{' '}
+            · {methodLabel(gift)}
+          </p>
+          {gift.status === 'reserved' &&
+            isPaymentFulfillment(gift.fulfillmentMethod) && (
+              <p
+                className={`mt-1 text-xs font-medium ${
+                  gift.pixPaid ? 'text-moss' : 'text-amber-800'
+                }`}
+              >
+                {gift.pixPaid
+                  ? gift.fulfillmentMethod === 'card'
+                    ? 'Cartão MP confirmado'
+                    : 'Pix confirmado'
+                  : gift.fulfillmentMethod === 'card'
+                    ? 'Aguardando pagamento (Mercado Pago)'
+                    : 'Aguardando confirmação do Pix'}
+              </p>
+            )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {gift.status === 'reserved' &&
+            isPaymentFulfillment(gift.fulfillmentMethod) &&
+            !gift.pixPaid && (
+              <button
+                type="button"
+                className="bg-forest px-3 py-1.5 text-sm text-linen hover:bg-moss"
+                onClick={() => setPixPaid(gift.id, true)}
+              >
+                Marcar pago
+              </button>
+            )}
+          {gift.status === 'reserved' &&
+            isPaymentFulfillment(gift.fulfillmentMethod) &&
+            gift.pixPaid && (
+              <button
+                type="button"
+                className="border border-sage/40 px-3 py-1.5 text-sm hover:bg-mist"
+                onClick={() => setPixPaid(gift.id, false)}
+              >
+                Desfazer pago
+              </button>
+            )}
+          {gift.status === 'reserved' && (
+            <button
+              type="button"
+              className="border border-sage/40 px-3 py-1.5 text-sm hover:bg-mist"
+              onClick={() => releaseGift(gift.id)}
+            >
+              Liberar
+            </button>
+          )}
+          <button
+            type="button"
+            className="border border-red-200 px-3 py-1.5 text-sm text-red-900 hover:bg-red-50"
+            onClick={() => {
+              if (confirm(`Remover “${gift.name}”?`)) deleteGift(gift.id)
+            }}
+          >
+            Remover
+          </button>
+        </div>
+      </div>
+
+      <div className="border-t border-sage/20 pt-3">
+        <label className="text-xs font-medium uppercase tracking-wide text-moss">
+          Link Mercado Pago (valor do produto)
+        </label>
+        <div className="mt-1 flex flex-col gap-2 sm:flex-row">
+          <input
+            type="url"
+            value={mpLink}
+            onChange={(e) => setMpLink(e.target.value)}
+            placeholder="Vazio = usa link geral sem valor fixo"
+            className="w-full flex-1 border border-sage/40 px-3 py-2 text-sm outline-none focus:border-moss"
+          />
+          <button
+            type="button"
+            disabled={saving || mpLink.trim() === (gift.mercadoPagoLink || '')}
+            onClick={saveMpLink}
+            className="shrink-0 bg-forest px-4 py-2 text-sm text-linen hover:bg-moss disabled:opacity-40"
+          >
+            {saving ? 'Salvando…' : 'Salvar link'}
+          </button>
+        </div>
+        <p className="mt-1 text-xs text-muted">
+          {gift.mercadoPagoLink?.startsWith('http')
+            ? 'Usando link deste presente (com valor).'
+            : 'Sem link específico — convidado usa o link geral.'}
+        </p>
+      </div>
+    </li>
+  )
+}
+
 function Field({
   label,
   value,
@@ -435,6 +498,7 @@ function Field({
   type = 'text',
   required,
   className = '',
+  placeholder,
 }: {
   label: string
   value: string
@@ -442,6 +506,7 @@ function Field({
   type?: string
   required?: boolean
   className?: string
+  placeholder?: string
 }) {
   return (
     <div className={className}>
@@ -450,6 +515,7 @@ function Field({
         type={type}
         required={required}
         value={value}
+        placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
         className="mt-1 w-full border border-sage/40 px-3 py-2 outline-none focus:border-moss"
       />

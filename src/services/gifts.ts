@@ -21,7 +21,7 @@ import type {
 import { isFulfillmentMethod } from '../types/gift'
 
 const COLLECTION = 'gifts'
-const STORAGE_KEY = 'casamento-demo-gifts-v2'
+const STORAGE_KEY = 'casamento-demo-gifts-v3'
 
 function normalizeGift(partial: Partial<Gift> & { id: string }): Gift {
   return {
@@ -32,6 +32,7 @@ function normalizeGift(partial: Partial<Gift> & { id: string }): Gift {
     imageUrl: String(partial.imageUrl ?? ''),
     category: String(partial.category ?? ''),
     link: String(partial.link ?? ''),
+    mercadoPagoLink: String(partial.mercadoPagoLink ?? ''),
     status: partial.status === 'reserved' ? 'reserved' : 'available',
     reservedBy: partial.reservedBy ?? null,
     reservedAt: partial.reservedAt ?? null,
@@ -69,6 +70,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Gift {
     imageUrl: data.imageUrl as string,
     category: data.category as string,
     link: data.link as string,
+    mercadoPagoLink: data.mercadoPagoLink as string,
     status: data.status as Gift['status'],
     reservedBy: data.reservedBy as string | null,
     reservedAt: data.reservedAt as string | null,
@@ -149,6 +151,7 @@ export async function createGift(input: GiftInput): Promise<void> {
     imageUrl: input.imageUrl,
     category: input.category,
     link: input.link ?? '',
+    mercadoPagoLink: input.mercadoPagoLink ?? '',
     status: input.status ?? 'available',
     reservedBy: null,
     reservedAt: null,

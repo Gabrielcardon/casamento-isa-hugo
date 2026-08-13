@@ -6,6 +6,10 @@ export const wedding = {
   partnerTwo: 'Hugo',
   dateLabel: '28.11.2026',
   dateISO: '2026-11-28',
+  /** Horário da cerimônia (hora local) */
+  timeLabel: '15:30',
+  timeHour: 15,
+  timeMinute: 30,
   city: 'Villa do Rocio',
   venue: 'Villa do Rocio',
   message:
@@ -51,10 +55,23 @@ export function hasPixConfigured(): boolean {
   return Boolean(wedding.pixKey.trim() || wedding.pixCopiaECola.trim() || wedding.pixQrImage.trim())
 }
 
-export function hasMercadoPagoLink(): boolean {
-  return wedding.mercadoPagoPaymentLink.trim().startsWith('http')
+export function hasMercadoPagoLink(giftLink?: string | null): boolean {
+  return resolveMercadoPagoLink(giftLink).startsWith('http')
 }
 
 export function getMercadoPagoPaymentLink(): string {
   return wedding.mercadoPagoPaymentLink.trim()
+}
+
+/**
+ * Prioridade: link do presente (com valor) → link geral (sem valor fixo).
+ */
+export function resolveMercadoPagoLink(giftLink?: string | null): string {
+  const specific = (giftLink ?? '').trim()
+  if (specific.startsWith('http')) return specific
+  return getMercadoPagoPaymentLink()
+}
+
+export function isGiftSpecificMercadoPagoLink(giftLink?: string | null): boolean {
+  return (giftLink ?? '').trim().startsWith('http')
 }

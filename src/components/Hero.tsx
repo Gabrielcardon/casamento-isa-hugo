@@ -1,4 +1,5 @@
 import { coupleDisplayName, wedding } from '../config/wedding'
+import { WeddingCountdown } from './WeddingCountdown'
 
 export function Hero() {
   return (
@@ -32,11 +33,15 @@ export function Hero() {
           {wedding.partnerTwo}
         </h1>
 
-        <p className="animate-fade-up delay-2 mx-auto mt-8 max-w-lg font-sans text-base text-linen/90 md:text-lg">
+        <p className="animate-fade-up delay-2 mx-auto mt-6 max-w-lg font-sans text-base text-linen/90 md:text-lg">
           {wedding.dateLabel}
+          <span className="mx-2 text-champagne-soft/80">•</span>
+          {wedding.timeLabel}
           <span className="mx-2 text-champagne-soft/80">•</span>
           {wedding.venue || wedding.city}
         </p>
+
+        <WeddingCountdown />
 
         <div className="animate-fade-up delay-3 mt-12">
           <a
