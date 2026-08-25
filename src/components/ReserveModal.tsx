@@ -112,7 +112,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'store'}
                     onChange={() => setMethod('store')}
-                    title="Receberemos o Presente"
+                    title="Receberemos o presente"
                     description={
                       gift.link
                         ? 'Compre na loja (ou pelo link de referência) e entregue ou envie para nossa casa.'

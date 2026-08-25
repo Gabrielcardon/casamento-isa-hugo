@@ -1,0 +1,353 @@
+diff --git a/index.html b/index.html
+index 4bfbb60..0da7771 100644
+--- a/index.html
++++ b/index.html
+@@ -11,7 +11,7 @@
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+     <link
+-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Figtree:wght@400;500;600&display=swap"
++      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Figtree:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap"
+       rel="stylesheet"
+     />
+     <title>Isabella & Hugo — Casamento</title>
+diff --git a/src/components/Header.tsx b/src/components/Header.tsx
+index 4eb666c..3cb28b8 100644
+--- a/src/components/Header.tsx
++++ b/src/components/Header.tsx
+@@ -6,11 +6,14 @@ export function Header() {
+       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:px-10">
+         <a
+           href="#inicio"
+-          className="font-display text-lg tracking-[0.08em] text-champagne-soft transition-opacity hover:opacity-80 md:text-xl"
++          className="font-script text-2xl text-linen transition-opacity hover:opacity-80 md:text-3xl"
+         >
+           {coupleDisplayName}
+         </a>
+         <nav className="flex items-center gap-6 text-sm text-mist/90">
++          <a href="#local" className="transition-colors hover:text-champagne-soft">
++            Local
++          </a>
+           <a href="#mensagem" className="transition-colors hover:text-champagne-soft">
+             Mensagem
+           </a>
+diff --git a/src/components/Hero.tsx b/src/components/Hero.tsx
+index cb943b5..c8125d2 100644
+--- a/src/components/Hero.tsx
++++ b/src/components/Hero.tsx
+@@ -8,20 +8,24 @@ export function Hero() {
+       className="relative flex min-h-dvh flex-col justify-end overflow-hidden bg-hero-atmosphere px-6 pb-16 pt-28 md:px-10 md:pb-24"
+     >
+       <div
+-        className="pointer-events-none absolute -right-16 top-24 h-72 w-72 rounded-full border border-champagne-soft/25 animate-float md:h-96 md:w-96"
++        className="pointer-events-none absolute -right-16 top-24 h-72 w-72 rounded-full border border-champagne-soft/30 animate-float md:h-96 md:w-96"
+         aria-hidden
+       />
+       <div
+-        className="pointer-events-none absolute -left-20 bottom-32 h-64 w-64 rounded-full border border-linen/20 opacity-70"
++        className="pointer-events-none absolute -left-20 bottom-32 h-64 w-64 rounded-full border border-linen/25 opacity-70"
+         aria-hidden
+       />
+       <div
+-        className="pointer-events-none absolute left-1/2 top-1/3 h-px w-[min(70%,28rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-champagne-soft/50 to-transparent animate-fade-in"
++        className="pointer-events-none absolute left-1/2 top-1/3 h-px w-[min(70%,28rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-champagne-soft/60 to-transparent animate-fade-in"
+         aria-hidden
+       />
+ 
+       <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
+-        <p className="animate-fade-up font-sans text-xs font-medium uppercase tracking-[0.35em] text-champagne-soft/95 md:text-sm">
++        <p className="animate-fade-up font-script text-2xl text-linen/90 md:text-3xl">
++          {coupleDisplayName}
++        </p>
++
++        <p className="animate-fade-up mt-2 font-sans text-xs font-medium uppercase tracking-[0.35em] text-champagne-soft md:text-sm">
+           Casamento
+         </p>
+ 
+@@ -35,9 +39,9 @@ export function Hero() {
+ 
+         <p className="animate-fade-up delay-2 mx-auto mt-6 max-w-lg font-sans text-base text-linen/90 md:text-lg">
+           {wedding.dateLabel}
+-          <span className="mx-2 text-champagne-soft/80">•</span>
++          <span className="mx-2 text-champagne-soft">•</span>
+           {wedding.timeLabel}
+-          <span className="mx-2 text-champagne-soft/80">•</span>
++          <span className="mx-2 text-champagne-soft">•</span>
+           {wedding.venue || wedding.city}
+         </p>
+ 
+@@ -54,10 +58,6 @@ export function Hero() {
+             </span>
+           </a>
+         </div>
+-
+-        <p className="animate-fade-in delay-4 mt-16 font-display text-sm italic tracking-wide text-linen/50">
+-          {coupleDisplayName}
+-        </p>
+       </div>
+     </section>
+   )
+diff --git a/src/components/MessageSection.tsx b/src/components/MessageSection.tsx
+index 546a03d..ef41210 100644
+--- a/src/components/MessageSection.tsx
++++ b/src/components/MessageSection.tsx
+@@ -4,7 +4,7 @@ export function MessageSection() {
+   return (
+     <section id="mensagem" className="bg-section-wash px-6 py-24 md:px-10 md:py-32">
+       <div className="mx-auto max-w-2xl text-center">
+-        <div className="mx-auto h-px w-16 bg-sage" />
++        <div className="mx-auto h-px w-20 bg-gradient-to-r from-coral via-peach to-sky" />
+         <p className="mt-10 font-display text-xl leading-relaxed text-muted md:text-2xl text-balance">
+           {wedding.message}
+         </p>
+diff --git a/src/components/Venue.tsx b/src/components/Venue.tsx
+new file mode 100644
+index 0000000..4aaf856
+--- /dev/null
++++ b/src/components/Venue.tsx
+@@ -0,0 +1,95 @@
++import { coupleDisplayName, wedding } from '../config/wedding'
++
++/** Um raminho floral simples, no espírito da identidade visual (traço leve, tons coral/oliva). */
++function FloralAccent({ className = '' }: { className?: string }) {
++  return (
++    <svg
++      viewBox="0 0 120 320"
++      fill="none"
++      className={className}
++      aria-hidden
++    >
++      <path
++        d="M60 20 C 58 90, 62 180, 58 300"
++        stroke="var(--color-olive)"
++        strokeWidth="2"
++        strokeLinecap="round"
++      />
++      {[
++        { cy: 55, r: 14, dx: -22, color: 'var(--color-coral)' },
++        { cy: 95, r: 11, dx: 20, color: 'var(--color-peach)' },
++        { cy: 140, r: 13, dx: -20, color: 'var(--color-coral)' },
++        { cy: 190, r: 10, dx: 18, color: 'var(--color-lavender)' },
++        { cy: 235, r: 12, dx: -18, color: 'var(--color-peach)' },
++        { cy: 275, r: 9, dx: 16, color: 'var(--color-sky)' },
++      ].map((b, i) => (
++        <g key={i} transform={`translate(${60 + b.dx} ${b.cy})`}>
++          <path
++            d={`M0 0 L${-b.dx / 3} ${-14}`}
++            stroke="var(--color-olive)"
++            strokeWidth="1.5"
++            strokeLinecap="round"
++          />
++          <circle r={b.r} fill={b.color} opacity="0.85" />
++        </g>
++      ))}
++    </svg>
++  )
++}
++
++export function Venue() {
++  const mapQuery = encodeURIComponent(wedding.venueAddress)
++
++  return (
++    <section id="local" className="relative overflow-hidden bg-cream px-6 py-24 md:px-10 md:py-32">
++      <FloralAccent className="pointer-events-none absolute -left-6 top-10 hidden h-72 w-28 opacity-70 md:block" />
++      <FloralAccent className="pointer-events-none absolute -right-6 bottom-10 hidden h-72 w-28 rotate-180 opacity-50 lg:block" />
++
++      <div className="relative mx-auto max-w-3xl text-center">
++        <h2 className="font-display text-4xl font-medium tracking-tight text-olive-deep md:text-5xl">
++          Informações
++        </h2>
++        <p className="mt-3 font-script text-3xl text-olive md:text-4xl">{coupleDisplayName}</p>
++
++        <div className="mx-auto mt-12 grid gap-4 text-left">
++          <div className="border border-olive/30 bg-olive px-6 py-5 md:px-8 md:py-6">
++            <p className="font-display text-xl font-semibold text-cream md:text-2xl">
++              {wedding.dateLabel}
++            </p>
++            <p className="mt-1 font-sans text-sm text-cream/85">das {wedding.timeLabel}</p>
++          </div>
++
++          <div className="bg-sage px-6 py-5 md:px-8 md:py-6">
++            <p className="font-display text-xl font-semibold text-olive-deep md:text-2xl">
++              {wedding.venue}
++            </p>
++            <p className="mt-1 font-sans text-sm text-olive-deep/80">{wedding.venueAddress}</p>
++          </div>
++
++          <div className="bg-sage-soft px-6 py-5 font-sans text-sm leading-relaxed text-olive-deep/90 md:px-8 md:py-6 md:text-base">
++            {wedding.venueAtmosphere}
++          </div>
++        </div>
++
++        <div className="mt-10 overflow-hidden border border-olive/20 shadow-sm">
++          <iframe
++            title={`Mapa — ${wedding.venue}`}
++            src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
++            className="h-72 w-full grayscale-[15%] md:h-96"
++            loading="lazy"
++            referrerPolicy="no-referrer-when-downgrade"
++          />
++        </div>
++
++        <a
++          href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
++          target="_blank"
++          rel="noreferrer"
++          className="mt-5 inline-flex items-center gap-2 font-sans text-sm font-medium tracking-wide text-olive underline decoration-coral/60 decoration-2 underline-offset-4 transition-colors hover:text-coral"
++        >
++          Ver rota até o local ↗
++        </a>
++      </div>
++    </section>
++  )
++}
+diff --git a/src/config/wedding.ts b/src/config/wedding.ts
+index 8f4165a..e586249 100644
+--- a/src/config/wedding.ts
++++ b/src/config/wedding.ts
+@@ -12,6 +12,9 @@ export const wedding = {
+   timeMinute: 30,
+   city: 'Villa do Rocio',
+   venue: 'Villa do Rocio',
++  venueAddress: 'R. José Kuckla, 100 - Almirante Tamandaré, PR',
++  venueAtmosphere:
++    'Atmosfera sofisticada e romântica, inspirada no verão europeu, com estética leve, organizada e elegante. Queremos fugir um pouco do óbvio!',
+   message:
+     'A maior alegria para nós é celebrar este dia com as pessoas que amamos. Se desejar nos presentear, preparamos esta lista com carinho para nos ajudar a dar início ao nosso novo lar. Agradecemos por fazer parte deste momento tão especial!',
+ 
+diff --git a/src/index.css b/src/index.css
+index c5f5ff2..2673b7b 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -3,18 +3,37 @@
+ @theme {
+   --font-display: "Cormorant Garamond", "Times New Roman", serif;
+   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+-
+-  /* Marca principal: #a2ad86 */
+-  --color-forest: #3d4a32;
+-  --color-forest-deep: #2a3322;
+-  --color-moss: #6f7d55;
+-  --color-sage: #a2ad86;
+-  --color-mist: #eef1e8;
+-  --color-linen: #f6f7f3;
+-  --color-champagne: #a2ad86;
+-  --color-champagne-soft: #c4cbb2;
+-  --color-ink: #2c3326;
+-  --color-muted: #5c6654;
++  --font-script: "Mrs Saint Delafield", "Brush Script MT", cursive;
++
++  /*
++   * Paleta oficial (Hugo & Isabella) — "fim de tarde ensolarada,
++   * campo italiano / beira-mar": off-white, amanteigado, pêssego,
++   * coral, lavanda, azul claro e verde oliva.
++   */
++  --color-cream: #faf8f1;
++  --color-linen: #f6f3ea;
++  --color-mist: #efece0;
++
++  --color-butter: #f0d489;
++  --color-peach: #eda257;
++  --color-coral: #ee7167;
++  --color-lavender: #b6a2d6;
++  --color-sky: #93b2df;
++
++  --color-sage: #9bab77;
++  --color-sage-soft: #c3cfa9;
++  --color-olive: #6f7d4f;
++  --color-olive-deep: #45502f;
++
++  --color-ink: #3a3a2f;
++  --color-muted: #6b6a58;
++
++  /* aliases mantidos por compatibilidade com o restante do código */
++  --color-forest: var(--color-olive);
++  --color-forest-deep: var(--color-olive-deep);
++  --color-moss: var(--color-sage);
++  --color-champagne: var(--color-peach);
++  --color-champagne-soft: var(--color-butter);
+ }
+ 
+ @layer base {
+@@ -27,12 +46,12 @@
+     min-height: 100vh;
+     font-family: var(--font-sans);
+     color: var(--color-ink);
+-    background: var(--color-linen);
++    background: var(--color-cream);
+     -webkit-font-smoothing: antialiased;
+   }
+ 
+   ::selection {
+-    background: color-mix(in srgb, var(--color-sage) 45%, transparent);
++    background: color-mix(in srgb, var(--color-coral) 35%, transparent);
+   }
+ }
+ 
+@@ -41,25 +60,40 @@
+     font-family: var(--font-display);
+   }
+ 
++  .font-script {
++    font-family: var(--font-script);
++  }
++
+   .text-balance {
+     text-wrap: balance;
+   }
+ 
++  /* Hero: fim de tarde ensolarada — pêssego, lavanda e céu sobre creme,
++     com o verde-oliva ancorando a base, em vez do gradiente florestal escuro. */
+   .bg-hero-atmosphere {
+     background:
+-      radial-gradient(ellipse 80% 60% at 20% 30%, rgba(162, 173, 134, 0.35), transparent 55%),
+-      radial-gradient(ellipse 70% 50% at 85% 20%, rgba(196, 203, 178, 0.3), transparent 50%),
+-      radial-gradient(ellipse 60% 70% at 50% 100%, rgba(42, 51, 34, 0.55), transparent 55%),
+-      linear-gradient(165deg, #2a3322 0%, #3d4a32 38%, #5a6b48 72%, #a2ad86 100%);
++      radial-gradient(ellipse 65% 55% at 12% 15%, rgba(238, 162, 87, 0.4), transparent 55%),
++      radial-gradient(ellipse 60% 50% at 88% 10%, rgba(182, 162, 214, 0.32), transparent 55%),
++      radial-gradient(ellipse 70% 55% at 100% 60%, rgba(147, 178, 223, 0.28), transparent 55%),
++      radial-gradient(ellipse 80% 60% at 30% 100%, rgba(111, 125, 79, 0.55), transparent 60%),
++      linear-gradient(165deg, #f6efdd 0%, #f0dcb8 32%, #e7c397 55%, #a9ac74 82%, #6f7d4f 100%);
+   }
+ 
+   .bg-section-wash {
+     background:
+-      radial-gradient(ellipse 50% 40% at 0% 0%, rgba(162, 173, 134, 0.22), transparent 50%),
+-      radial-gradient(ellipse 40% 50% at 100% 30%, rgba(162, 173, 134, 0.12), transparent 45%),
++      radial-gradient(ellipse 50% 40% at 0% 0%, rgba(238, 162, 87, 0.14), transparent 50%),
++      radial-gradient(ellipse 45% 45% at 100% 20%, rgba(182, 162, 214, 0.14), transparent 50%),
++      radial-gradient(ellipse 40% 50% at 100% 100%, rgba(147, 178, 223, 0.12), transparent 50%),
+       var(--color-linen);
+   }
+ 
++  /* washes usados na seção "Local" para lembrar as barrinhas coloridas
++     da paleta (pêssego / coral / lavanda / céu / oliva) */
++  .bg-wash-peach { background-color: color-mix(in srgb, var(--color-peach) 88%, white); }
++  .bg-wash-coral { background-color: color-mix(in srgb, var(--color-coral) 88%, white); }
++  .bg-wash-lavender { background-color: color-mix(in srgb, var(--color-lavender) 88%, white); }
++  .bg-wash-sky { background-color: color-mix(in srgb, var(--color-sky) 88%, white); }
++
+   .animate-fade-up {
+     animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+   }
+diff --git a/src/pages/HomePage.tsx b/src/pages/HomePage.tsx
+index 45c2c35..acbf6e8 100644
+--- a/src/pages/HomePage.tsx
++++ b/src/pages/HomePage.tsx
+@@ -4,6 +4,7 @@ import { Footer } from '../components/Footer'
+ import { Header } from '../components/Header'
+ import { Hero } from '../components/Hero'
+ import { MessageSection } from '../components/MessageSection'
++import { Venue } from '../components/Venue'
+ import { useGifts } from '../hooks/useGifts'
+ import { reserveGift } from '../services/gifts'
+ import type { FulfillmentMethod } from '../types/gift'
+@@ -33,6 +34,7 @@ export function HomePage() {
+       <main>
+         <Hero />
+         <MessageSection />
++        <Venue />
+         <GiftList gifts={gifts} loading={loading} onReserve={handleReserve} />
+       </main>
+       <Footer />

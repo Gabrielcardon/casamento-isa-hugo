@@ -72,9 +72,11 @@ export function WeddingCountdown() {
 
   return (
     <div className="animate-fade-up delay-2 mt-10">
-      <p className="font-sans text-[0.7rem] uppercase tracking-[0.3em] text-champagne-soft/85">
-        {isToday ? 'Começa em' : 'Contagem regressiva'}
-      </p>
+      {isToday && (
+        <p className="font-sans text-[0.7rem] uppercase tracking-[0.3em] text-[#f4e8d7]">
+          Começa em
+        </p>
+      )}
 
       <div className="mt-5 flex items-end justify-center gap-1 sm:gap-2">
         {!isToday && (

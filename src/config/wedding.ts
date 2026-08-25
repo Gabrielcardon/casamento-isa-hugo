@@ -2,9 +2,10 @@
  * Personalize os dados do casamento, Pix e Mercado Pago aqui.
  */
 export const wedding = {
-  partnerOne: 'Isabella',
-  partnerTwo: 'Hugo',
+  partnerOne: 'Hugo',
+  partnerTwo: 'Isabella',
   dateLabel: '28.11.2026',
+  dateLongLabel: '28 de novembro de 2026',
   dateISO: '2026-11-28',
   /** Horário da cerimônia (hora local) */
   timeLabel: '15:30',
@@ -12,8 +13,11 @@ export const wedding = {
   timeMinute: 30,
   city: 'Villa do Rocio',
   venue: 'Villa do Rocio',
+  venueAddress: 'R. José Kuckla, 100 - Almirante Tamandaré, PR',
+  venueAtmosphere:
+    'Atmosfera sofisticada e romântica, inspirada no verão europeu, com estética leve, organizada e elegante. Queremos fugir um pouco do óbvio!',
   message:
-    'A maior alegria para nós é celebrar este dia com as pessoas que amamos. Se desejar nos presentear, preparamos esta lista com carinho para nos ajudar a dar início ao nosso novo lar. Agradecemos por fazer parte deste momento tão especial!',
+    'Nosso casamento marca o início de uma nova etapa, cheia de sonhos e planos para construirmos juntos. Para quem quiser fazer parte desse começo de uma maneira especial, preparamos esta lista com carinho para o nosso novo lar.',
 
   /**
    * Dados do Pix — QR gerado a partir do Copia e Cola.

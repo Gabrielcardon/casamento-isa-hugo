@@ -4,6 +4,7 @@ import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import { Hero } from '../components/Hero'
 import { MessageSection } from '../components/MessageSection'
+import { Venue } from '../components/Venue'
 import { useGifts } from '../hooks/useGifts'
 import { reserveGift } from '../services/gifts'
 import type { FulfillmentMethod } from '../types/gift'
@@ -33,6 +34,7 @@ export function HomePage() {
       <main>
         <Hero />
         <MessageSection />
+        <Venue />
         <GiftList gifts={gifts} loading={loading} onReserve={handleReserve} />
       </main>
       <Footer />

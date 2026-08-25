@@ -40,49 +40,45 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
   }, [gifts, filter, category])
 
   return (
-    <section id="presentes" className="bg-section-wash px-6 pb-28 md:px-10">
+    <section id="presentes" className="bg-[#e4a06f] px-6 pb-28 md:px-10">
+      <div className="-mx-6 bg-white px-6 pb-16 pt-16 md:-mx-10 md:px-10 md:pb-20 md:pt-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-4xl font-medium tracking-tight text-forest md:text-5xl">
+              Nossa lista de presentes
+            </h2>
+            <p className="mt-5 text-muted leading-relaxed text-balance">
+              Para tornar tudo mais prático, você pode escolher o presente e a
+              forma de presentear que preferir.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-8 grid max-w-3xl gap-5 sm:grid-cols-2">
+            <div className="border border-[#c7c7c7] bg-[#eeeeee] px-6 py-6 text-center shadow-sm">
+              <p className="font-sans text-sm font-semibold tracking-wide text-forest">
+                Entregue o presente
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Escolha o presente na loja de sua preferência ou acesse nosso link
+                de referência. Você pode entregá-lo pessoalmente até a data do
+                casamento.
+              </p>
+            </div>
+            <div className="border border-[#c7c7c7] bg-[#eeeeee] px-6 py-6 text-center shadow-sm">
+              <p className="font-sans text-sm font-semibold tracking-wide text-forest">
+                Envie o valor
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Escolha o presente e contribua com o valor correspondente de forma
+                rápida e segura, via PIX ou cartão pelo Mercado Pago.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-4xl font-medium tracking-tight text-forest md:text-5xl">
-            Nossa Lista de Presentes
-          </h2>
-          <p className="mt-5 text-muted leading-relaxed text-balance">
-            Selecionamos alguns itens que farão parte do início do nosso novo
-            lar. Para tornar tudo mais prático, você pode escolher o presente e
-            a forma de presentear que preferir.
-          </p>
-        </div>
-
-        <div className="mx-auto mt-12 grid max-w-3xl gap-8 sm:grid-cols-2">
-          <div className="text-center sm:text-left">
-            <p className="font-sans text-sm font-semibold tracking-wide text-forest">
-              Receberemos o Presente
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Compre o item na loja de sua preferência (ou utilize nosso link de
-              referência) e entregue pessoalmente ou envie diretamente para
-              nossa casa.
-            </p>
-          </div>
-          <div className="text-center sm:text-left">
-            <p className="font-sans text-sm font-semibold tracking-wide text-forest">
-              Contribuir com o valor
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Selecione o presente desejado e contribua com o valor
-              correspondente via PIX ou cartão (link Mercado Pago).
-            </p>
-          </div>
-        </div>
-
-        {!loading && (
-          <p className="mt-10 text-center text-sm text-muted">
-            {gifts.filter((g) => g.status === 'available').length} de{' '}
-            {gifts.length} disponíveis
-          </p>
-        )}
-
-        <div className="mt-8 flex flex-col gap-4 border-y border-sage/25 py-5 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col gap-4 border-y border-[#170909]/25 py-5 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap justify-center gap-2 md:justify-start">
             {(
               [
@@ -97,8 +93,8 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
                 onClick={() => setFilter(key)}
                 className={`px-4 py-2 text-sm transition ${
                   filter === key
-                    ? 'bg-forest text-linen'
-                    : 'text-muted hover:text-forest'
+                    ? 'bg-[#170909] text-linen'
+                    : 'text-[#170909] hover:text-[#170909]'
                 }`}
               >
                 {label}
@@ -157,16 +153,16 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
                           alt=""
                           loading="lazy"
                           className={`h-full w-full object-cover transition duration-700 group-hover:scale-[1.03] ${
-                            reserved ? 'grayscale-[35%] opacity-75' : ''
+                            reserved ? 'grayscale opacity-60' : ''
                           }`}
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-mist to-sage/30 font-display text-3xl text-moss/40">
+                        <div className={`flex h-full items-center justify-center bg-gradient-to-br from-mist to-sage/30 font-display text-3xl text-moss/40 ${reserved ? 'grayscale opacity-60' : ''}`}>
                           {gift.name.slice(0, 1)}
                         </div>
                       )}
                       {reserved && (
-                        <span className="absolute inset-x-0 bottom-0 bg-forest-deep/75 px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-champagne-soft">
+                        <span className="absolute inset-x-0 bottom-0 bg-[#170909]/60 px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-champagne-soft">
                           Já reservado
                           {gift.fulfillmentMethod === 'pix' ? ' · Pix' : ''}
                           {gift.fulfillmentMethod === 'card' ? ' · Cartão' : ''}
@@ -179,11 +175,11 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
 
                     <div className="mt-5">
                       {gift.category && (
-                        <p className="text-xs uppercase tracking-[0.2em] text-sage">
+                        <p className="text-xs uppercase tracking-[0.2em] text-black">
                           {gift.category}
                         </p>
                       )}
-                      <h3 className="mt-1 font-display text-2xl font-medium text-forest">
+                      <h3 className="mt-1 font-display text-2xl font-medium text-[#170909]">
                         {gift.name}
                       </h3>
                       {gift.description && (
@@ -196,7 +192,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
                           {formatPrice(gift.price)}
                         </p>
                         {reserved ? (
-                          <span className="text-sm text-muted">Obrigado</span>
+                          <span className="text-sm text-muted">Reservado</span>
                         ) : (
                           <button
                             type="button"
@@ -213,6 +209,13 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
               )
             })}
           </ul>
+        )}
+
+        {!loading && (
+          <p className="mt-12 text-center text-sm text-muted">
+            {gifts.filter((g) => g.status === 'available').length} de{' '}
+            {gifts.length} disponíveis
+          </p>
         )}
       </div>
 

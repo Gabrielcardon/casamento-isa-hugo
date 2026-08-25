@@ -1,4 +1,4 @@
-import { coupleDisplayName, wedding } from '../config/wedding'
+import { wedding } from '../config/wedding'
 import { WeddingCountdown } from './WeddingCountdown'
 
 export function Hero() {
@@ -7,21 +7,19 @@ export function Hero() {
       id="inicio"
       className="relative flex min-h-dvh flex-col justify-end overflow-hidden bg-hero-atmosphere px-6 pb-16 pt-28 md:px-10 md:pb-24"
     >
+      <div className="bg-hero-art pointer-events-none absolute inset-0" aria-hidden />
+
       <div
-        className="pointer-events-none absolute -right-16 top-24 h-72 w-72 rounded-full border border-champagne-soft/25 animate-float md:h-96 md:w-96"
+        className="pointer-events-none absolute -right-16 top-24 h-72 w-72 rounded-full border border-champagne-soft/30 animate-float md:h-96 md:w-96"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -left-20 bottom-32 h-64 w-64 rounded-full border border-linen/20 opacity-70"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-px w-[min(70%,28rem)] -translate-x-1/2 bg-gradient-to-r from-transparent via-champagne-soft/50 to-transparent animate-fade-in"
+        className="pointer-events-none absolute -left-20 bottom-32 h-64 w-64 rounded-full border border-linen/25 opacity-70"
         aria-hidden
       />
 
       <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
-        <p className="animate-fade-up font-sans text-xs font-medium uppercase tracking-[0.35em] text-champagne-soft/95 md:text-sm">
+        <p className="animate-fade-up mt-4 font-sans text-xs font-medium uppercase tracking-[0.35em] text-[#f4e8d7] md:text-sm">
           Casamento
         </p>
 
@@ -35,9 +33,9 @@ export function Hero() {
 
         <p className="animate-fade-up delay-2 mx-auto mt-6 max-w-lg font-sans text-base text-linen/90 md:text-lg">
           {wedding.dateLabel}
-          <span className="mx-2 text-champagne-soft/80">•</span>
+          <span className="mx-2 text-champagne-soft">•</span>
           {wedding.timeLabel}
-          <span className="mx-2 text-champagne-soft/80">•</span>
+          <span className="mx-2 text-champagne-soft">•</span>
           {wedding.venue || wedding.city}
         </p>
 
@@ -54,10 +52,6 @@ export function Hero() {
             </span>
           </a>
         </div>
-
-        <p className="animate-fade-in delay-4 mt-16 font-display text-sm italic tracking-wide text-linen/50">
-          {coupleDisplayName}
-        </p>
       </div>
     </section>
   )
