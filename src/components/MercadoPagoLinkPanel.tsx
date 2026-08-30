@@ -31,9 +31,9 @@ export function MercadoPagoLinkPanel({
 
   if (!ready) {
     return (
-      <div className="border border-champagne/40 bg-champagne/10 px-4 py-4 text-left text-sm text-forest">
-        <p className="font-medium">Mercado Pago — link não configurado</p>
-        <p className="mt-2 leading-relaxed text-muted">
+      <div className="border border-sage/30 bg-white/80 p-4 text-left shadow-sm">
+        <p className="mt-2 font-medium text-forest">Link não configurado</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
           Cadastre um link neste presente no admin, ou o link geral em{' '}
           <code className="text-xs">src/config/wedding.ts</code>.
         </p>
@@ -42,49 +42,40 @@ export function MercadoPagoLinkPanel({
   }
 
   return (
-    <div className="space-y-4 text-center">
-      <div className="border border-sage/30 bg-white/70 px-4 py-4 text-left text-sm">
-        <p className="text-xs uppercase tracking-[0.2em] text-moss">
-          Mercado Pago
-          {hasFixedAmount ? ' · valor do presente' : ' · valor a informar'}
-        </p>
-        <p className="mt-2 font-display text-xl text-forest">{giftName}</p>
-        <p className="mt-1 font-semibold tabular-nums text-forest">
+    <div className="flex flex-col items-center gap-3 text-center">
+      <div className="w-full border border-sage/30 bg-white p-4 text-center shadow-sm">
+        <p className="mt-2 font-display text-xl leading-tight text-forest">{giftName}</p>
+        <p className="mt-1 font-sans text-sm font-semibold tabular-nums text-forest">
           {formatPrice(amount)}
         </p>
-        <ul className="mt-3 list-disc space-y-1.5 pl-4 text-xs leading-relaxed text-muted">
+        <div className="mt-3 space-y-1.5 text-xs leading-relaxed text-muted">
+          <p className="font-medium text-forest/80">
+            Você será redirecionado à página do Mercado Pago para confirmar o valor e finalizar o pagamento.
+          </p>
           {hasFixedAmount ? (
-            <li>
+            <p>
               Este link já foi criado com o valor do presente no Mercado Pago.
-            </li>
+            </p>
           ) : (
-            <li>
-              Link geral sem valor fixo — informe{' '}
+            <p>
+              Link sem valor fixo — informe{' '}
               <strong className="font-medium text-forest">
                 {formatPrice(amount)}
               </strong>{' '}
-              no checkout do MP.
-            </li>
+              no checkout do Mercado Pago.
+            </p>
           )}
-          <li>
-            O site não confere o pagamento sozinho. Os noivos marcam como pago
-            no admin.
-          </li>
-        </ul>
+        </div>
       </div>
 
       <a
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex w-full items-center justify-center bg-forest px-6 py-3 text-sm font-medium text-linen transition hover:bg-moss"
+        className="inline-flex w-full items-center justify-center border border-forest/30 bg-forest/5 px-5 py-2.5 text-sm font-medium text-forest transition hover:bg-forest hover:text-linen"
       >
         Pagar no Mercado Pago
       </a>
-
-      <p className="text-xs text-muted">
-        Cartão de crédito (e demais meios do MP) na página do Mercado Pago.
-      </p>
     </div>
   )
 }

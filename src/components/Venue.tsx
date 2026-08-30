@@ -4,13 +4,13 @@ export function Venue() {
   const mapQuery = encodeURIComponent(wedding.venueAddress)
 
   return (
-    <section id="local" className="relative overflow-hidden bg-cream px-6 pb-16 pt-10 md:px-10 md:pb-20 md:pt-14">
+    <section id="local" className="relative overflow-hidden bg-cream px-6 pb-16 pt-16 md:px-10 md:pb-20 md:pt-20">
       <div className="relative mx-auto max-w-3xl text-center">
-        <h2 className="mx-auto -translate-y-4 w-full text-center font-display text-4xl font-medium tracking-tight text-olive-deep md:text-5xl">
+        <h2 className="w-full -translate-y-5 text-center font-display text-4xl font-medium tracking-tight text-olive-deep md:text-5xl">
           Informações
         </h2>
 
-        <div className="mx-auto mt-5 grid gap-5 text-left md:grid-cols-2">
+        <div className="mx-auto mt-8 grid gap-5 text-left md:grid-cols-2">
           <div className="border border-olive/20 border-t-4 border-t-moss bg-white/80 px-6 py-7 text-center shadow-sm md:px-8 md:py-8">
             <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-olive">
               Data e horário

@@ -83,38 +83,33 @@ export function PixPayment({ amount, giftName, compact = false }: PixPaymentProp
             className="flex items-center justify-center bg-mist text-sm text-muted"
             style={{ width: compact ? 180 : 220, height: compact ? 180 : 220 }}
           >
-            Gerando QR…
+            Gerando QR Code…
           </div>
         )}
       </div>
 
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-moss">Pix</p>
         {giftName && (
           <p className="mt-1 font-display text-xl text-forest">{giftName}</p>
         )}
         {typeof amount === 'number' && amount > 0 && (
           <p className="mt-1 font-sans text-sm font-semibold tabular-nums text-forest">
-            Valor sugerido: {formatPrice(amount)}
+            {formatPrice(amount)}
           </p>
         )}
         {wedding.pixName && (
-          <p className="mt-1 text-sm text-muted">Recebedor: {wedding.pixName}</p>
+          <p className="mt-1 text-[11px] font-sans tracking-[0.08em] text-muted">
+            {wedding.pixName}
+          </p>
         )}
       </div>
-
-      {wedding.pixKey && (
-        <p className="max-w-xs break-all font-mono text-xs text-ink/80">
-          {wedding.pixKey}
-        </p>
-      )}
 
       <button
         type="button"
         onClick={copyKey}
         className="border border-forest/30 bg-forest/5 px-5 py-2.5 text-sm font-medium text-forest transition hover:bg-forest hover:text-linen"
       >
-        {copied ? 'Copiado!' : 'Copiar chave / Pix'}
+        {copied ? 'Copiado!' : 'Copiar chave'}
       </button>
 
       <p className="max-w-sm text-xs leading-relaxed text-muted">

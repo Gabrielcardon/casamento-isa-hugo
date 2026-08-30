@@ -124,7 +124,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     checked={method === 'pix'}
                     onChange={() => setMethod('pix')}
                     title="PIX"
-                    description="Envie o valor via PIX. O QR Code ficará disponível após a reserva."
+                    description="Envie o valor via PIX, o QR Code ficará disponível após a reserva."
                   />
                   <MethodOption
                     id={`${id}-card`}
@@ -134,8 +134,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     title="Cartão via Mercado Pago"
                     description={
                       gift.mercadoPagoLink?.startsWith('http')
-                        ? 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago. O link ficará disponível após a reserva.'
-                        : 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago. O link ficará disponível após a reserva.'
+                        ? 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago, o link ficará disponível após a reserva.'
+                        : 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago, o link ficará disponível após a reserva.'
                     }
                   />
                 </div>
@@ -144,7 +144,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               {method === 'pix' && (
                 <div className="border border-sage/25 bg-white/50 p-4">
                   <p className="mb-4 text-center text-xs text-muted">
-                    Após confirmar, o QR fica disponível. Valor sugerido:
+                    Após confirmar, o QR Code ficará disponível.
                   </p>
                   <PixPayment amount={gift.price} giftName={gift.name} compact />
                 </div>
@@ -275,7 +275,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               reservado em seu nome.
               {gift.link
                 ? ' Abrimos a loja em uma nova aba — se não abriu, use o botão abaixo.'
-                : ' Compre e entregue/envie aos noivos quando preferir.'}
+                : ' Compre e entregue até a data do casamento.'}
             </p>
             <div className="mt-6 flex flex-col gap-3">
               {gift.link && (
@@ -321,7 +321,7 @@ function MethodOption({
   return (
     <label
       htmlFor={id}
-      className={`flex cursor-pointer gap-3 border px-4 py-3 transition ${
+      className={`flex cursor-pointer gap-3 border px-4 py-3 pr-5 transition ${
         checked
           ? 'border-forest bg-forest/5'
           : 'border-sage/35 bg-white/50 hover:border-sage'
@@ -335,9 +335,9 @@ function MethodOption({
         onChange={onChange}
         className="mt-1 accent-[var(--color-forest)]"
       />
-      <span className="text-left">
+      <span className="flex-1 text-justify pr-1">
         <span className="block text-sm font-medium text-forest">{title}</span>
-        <span className="mt-0.5 block text-xs leading-relaxed text-muted">
+        <span className="mt-0.5 block text-justify text-xs leading-relaxed text-muted">
           {description}
         </span>
       </span>
