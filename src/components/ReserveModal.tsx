@@ -197,16 +197,6 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
             >
               Obrigado, {name.trim().split(' ')[0]}!
             </h3>
-            <p className="mt-2 text-sm text-muted">
-              Use o Pix abaixo para o valor de{' '}
-              <strong className="text-forest">
-                {gift.price.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
-              </strong>
-              . Os noivos confirmarão o pagamento no painel.
-            </p>
             <div className="mt-6 border border-sage/25 bg-white/60 p-4">
               <PixPayment amount={gift.price} giftName={gift.name} />
             </div>
