@@ -113,11 +113,11 @@ export function PixPayment({ amount, giftName, compact = false }: PixPaymentProp
       </button>
 
       <p className="max-w-sm text-xs leading-relaxed text-muted">
-        Abra o app do seu banco, escaneie o QR ou cole a chave. Informe o valor
+        Abra o app do seu banco, escaneie o QR Code ou cole a chave. Informe o valor
         {typeof amount === 'number' && amount > 0
           ? ` (${formatPrice(amount)})`
           : ''}{' '}
-        se o QR não trouxer o valor fixo.
+        se o QR Code não trouxer o valor fixo.
       </p>
     </div>
   )

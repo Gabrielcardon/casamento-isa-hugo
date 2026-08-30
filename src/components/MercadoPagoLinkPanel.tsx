@@ -48,15 +48,13 @@ export function MercadoPagoLinkPanel({
         <p className="mt-1 font-sans text-sm font-semibold tabular-nums text-forest">
           {formatPrice(amount)}
         </p>
-        <div className="mt-3 space-y-1.5 text-xs leading-relaxed text-muted">
-          <p className="font-medium text-forest/80">
-            Você será redirecionado à página do Mercado Pago para confirmar o valor e finalizar o pagamento.
-          </p>
-          {hasFixedAmount ? (
-            <p>
-              Este link já foi criado com o valor do presente no Mercado Pago.
+        <div className="mt-4 space-y-3 text-xs leading-relaxed text-muted">
+          {!hasFixedAmount && (
+            <p className="font-medium text-forest/80">
+              Você será redirecionado à página do Mercado Pago para confirmar o valor e finalizar o pagamento.
             </p>
-          ) : (
+          )}
+          {!hasFixedAmount && (
             <p>
               Link sem valor fixo — informe{' '}
               <strong className="font-medium text-forest">

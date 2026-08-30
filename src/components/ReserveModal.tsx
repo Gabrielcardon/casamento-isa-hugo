@@ -114,8 +114,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     title="Entregue o presente"
                     description={
                       gift.link
-                        ? 'Compre na loja de sua preferência, ou acesse nosso link de referência, e entregue até a data do casamento.'
-                        : 'Compre na loja de sua preferência, ou acesse nosso link de referência, e entregue até a data do casamento.'
+                        ? 'Compre na loja de sua preferência, ou acesse nosso link, e entregue até a data do casamento.'
+                        : 'Compre na loja de sua preferência, ou acesse nosso link, e entregue até a data do casamento.'
                     }
                   />
                   <MethodOption
