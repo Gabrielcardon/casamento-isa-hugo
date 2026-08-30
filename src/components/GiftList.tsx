@@ -40,7 +40,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
   }, [gifts, filter, category])
 
   return (
-    <section id="presentes" className="bg-[#e4a06f] px-6 pb-28 md:px-10">
+    <section id="presentes" className="bg-[#E3AA8A] px-6 pb-28 md:px-10">
       <div className="-mx-6 bg-white px-6 pb-16 pt-16 md:-mx-10 md:px-10 md:pb-20 md:pt-20">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">

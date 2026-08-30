@@ -76,8 +76,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               {gift.name}
             </h3>
             <p className="mt-2 font-sans text-sm text-muted">
-              Informe seu nome e como pretende presentear. O item ficará
-              indisponível para os demais convidados.
+              Ao reservar, o item ficará indisponível para os demais convidados.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -112,11 +111,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'store'}
                     onChange={() => setMethod('store')}
-                    title="Receberemos o presente"
+                    title="Entregue o presente"
                     description={
                       gift.link
-                        ? 'Compre na loja (ou pelo link de referência) e entregue ou envie para nossa casa.'
-                        : 'Compre na loja de sua preferência e entregue pessoalmente ou envie para nossa casa.'
+                        ? 'Compre na loja de sua preferência, ou acesse nosso link de referência, e entregue até a data do casamento.'
+                        : 'Compre na loja de sua preferência, ou acesse nosso link de referência, e entregue até a data do casamento.'
                     }
                   />
                   <MethodOption
@@ -124,8 +123,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'pix'}
                     onChange={() => setMethod('pix')}
-                    title="Contribuir via PIX"
-                    description="Contribua com o valor do presente via PIX. Mostramos o QR Code após a reserva."
+                    title="PIX"
+                    description="Envie o valor via PIX. O QR Code ficará disponível após a reserva."
                   />
                   <MethodOption
                     id={`${id}-card`}
@@ -135,8 +134,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     title="Cartão via Mercado Pago"
                     description={
                       gift.mercadoPagoLink?.startsWith('http')
-                        ? 'Abriremos o link deste presente (valor já definido no MP).'
-                        : 'Abriremos o link geral do MP — informe o valor do presente no checkout.'
+                        ? 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago. O link ficará disponível após a reserva.'
+                        : 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago. O link ficará disponível após a reserva.'
                     }
                   />
                 </div>
