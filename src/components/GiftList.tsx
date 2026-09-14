@@ -70,7 +70,7 @@ export function GiftList({ gifts, loading, onReserve }: GiftListProps) {
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 Escolha o presente e contribua com o valor correspondente de forma
-                rápida e segura, via PIX ou cartão pelo Mercado Pago.
+                rápida e segura, via PIX ou cartão pelo InfinitePay.
               </p>
             </div>
           </div>

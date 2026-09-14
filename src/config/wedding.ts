@@ -1,5 +1,5 @@
 /**
- * Personalize os dados do casamento, Pix e Mercado Pago aqui.
+ * Personalize os dados do casamento, Pix e InfinitePay aqui.
  */
 export const wedding = {
   partnerOne: 'Hugo',
@@ -29,10 +29,10 @@ export const wedding = {
   pixQrImage: '',
 
   /**
-   * PoC Mercado Pago — link fixo de pagamento (cobrança manual).
+   * PoC InfinitePay — link fixo de pagamento (cobrança manual).
    *
    * Como gerar:
-   * 1. Conta Mercado Pago → Ferramentas → Link de pagamento / Cobrar
+   * 1. Conta InfinitePay → Ferramentas → Link de pagamento / Cobrar
    * 2. Crie um link (valor aberto, se a conta permitir, ou valor base)
    * 3. Cole a URL abaixo
    *
@@ -41,9 +41,9 @@ export const wedding = {
    * - O convidado precisa digitar o valor (ou pagar o valor do link)
    * - O site NÃO confirma pagamento sozinho — o admin marca "pago" manualmente
    *
-   * Ex.: 'https://mpago.la/xxxxx' ou 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=...'
+   * Ex.: 'https://infinitepay.com/xxxxx' ou 'https://www.infinitepay.com.br/checkout/v1/redirect?pref_id=...'
    */
-  mercadoPagoPaymentLink: 'https://link.mercadopago.com.br/casamentohugoeisa',
+  infinitePayPaymentLink: 'https://link.infinitepay.com.br/casamentohugoeisa',
 } as const
 
 export const coupleDisplayName = `${wedding.partnerOne} & ${wedding.partnerTwo}`
@@ -59,23 +59,23 @@ export function hasPixConfigured(): boolean {
   return Boolean(wedding.pixKey.trim() || wedding.pixCopiaECola.trim() || wedding.pixQrImage.trim())
 }
 
-export function hasMercadoPagoLink(giftLink?: string | null): boolean {
-  return resolveMercadoPagoLink(giftLink).startsWith('http')
+export function hasInfinitePayLink(giftLink?: string | null): boolean {
+  return resolveInfinitePayLink(giftLink).startsWith('http')
 }
 
-export function getMercadoPagoPaymentLink(): string {
-  return wedding.mercadoPagoPaymentLink.trim()
+export function getInfinitePayPaymentLink(): string {
+  return wedding.infinitePayPaymentLink.trim()
 }
 
 /**
  * Prioridade: link do presente (com valor) → link geral (sem valor fixo).
  */
-export function resolveMercadoPagoLink(giftLink?: string | null): string {
+export function resolveInfinitePayLink(giftLink?: string | null): string {
   const specific = (giftLink ?? '').trim()
   if (specific.startsWith('http')) return specific
-  return getMercadoPagoPaymentLink()
+  return getInfinitePayPaymentLink()
 }
 
-export function isGiftSpecificMercadoPagoLink(giftLink?: string | null): boolean {
+export function isGiftSpecificInfinitePayLink(giftLink?: string | null): boolean {
   return (giftLink ?? '').trim().startsWith('http')
 }

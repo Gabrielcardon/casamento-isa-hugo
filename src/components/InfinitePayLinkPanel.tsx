@@ -8,7 +8,6 @@ interface InfinitePayLinkPanelProps {
   giftName: string
   /** Link específico deste presente (opcional) */
   giftInfinitePayLink?: string
-  giftMercadoPagoLink?: string
 }
 
 function formatPrice(value: number) {
@@ -19,17 +18,16 @@ function formatPrice(value: number) {
 }
 
 /**
- * Compatibilidade: legado nomeado como MercadoPago, mas usando o atual InfinitePay.
+ * Link do presente (com valor) tem prioridade; senão usa o link geral sem valor fixo.
  */
 export function InfinitePayLinkPanel({
   amount,
   giftName,
   giftInfinitePayLink = '',
-  giftMercadoPagoLink = '',
 }: InfinitePayLinkPanelProps) {
-  const link = resolveInfinitePayLink(giftInfinitePayLink || giftMercadoPagoLink)
+  const link = resolveInfinitePayLink(giftInfinitePayLink)
   const ready = link.startsWith('http')
-  const hasFixedAmount = isGiftSpecificInfinitePayLink(giftInfinitePayLink || giftMercadoPagoLink)
+  const hasFixedAmount = isGiftSpecificInfinitePayLink(giftInfinitePayLink)
 
   if (!ready) {
     return (

@@ -24,6 +24,12 @@ const COLLECTION = 'gifts'
 const STORAGE_KEY = 'casamento-demo-gifts-v3'
 
 function normalizeGift(partial: Partial<Gift> & { id: string }): Gift {
+  const infinitePayLink = String(
+    (partial as Partial<Gift> & { infinitePayLink?: string; mercadoPagoLink?: string }).infinitePayLink ??
+      (partial as Partial<Gift> & { infinitePayLink?: string; mercadoPagoLink?: string }).mercadoPagoLink ??
+      '',
+  )
+
   return {
     id: partial.id,
     name: String(partial.name ?? ''),
@@ -32,7 +38,7 @@ function normalizeGift(partial: Partial<Gift> & { id: string }): Gift {
     imageUrl: String(partial.imageUrl ?? ''),
     category: String(partial.category ?? ''),
     link: String(partial.link ?? ''),
-    mercadoPagoLink: String(partial.mercadoPagoLink ?? ''),
+    infinitePayLink,
     status: partial.status === 'reserved' ? 'reserved' : 'available',
     reservedBy: partial.reservedBy ?? null,
     reservedAt: partial.reservedAt ?? null,
@@ -62,6 +68,12 @@ function saveDemo(gifts: Gift[]) {
 }
 
 function mapDoc(id: string, data: Record<string, unknown>): Gift {
+  const infinitePayLink = String(
+    (data.infinitePayLink as string | undefined) ??
+      (data.mercadoPagoLink as string | undefined) ??
+      '',
+  )
+
   return normalizeGift({
     id,
     name: data.name as string,
@@ -70,7 +82,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Gift {
     imageUrl: data.imageUrl as string,
     category: data.category as string,
     link: data.link as string,
-    mercadoPagoLink: data.mercadoPagoLink as string,
+    infinitePayLink,
     status: data.status as Gift['status'],
     reservedBy: data.reservedBy as string | null,
     reservedAt: data.reservedAt as string | null,
@@ -151,7 +163,7 @@ export async function createGift(input: GiftInput): Promise<void> {
     imageUrl: input.imageUrl,
     category: input.category,
     link: input.link ?? '',
-    mercadoPagoLink: input.mercadoPagoLink ?? '',
+    infinitePayLink: input.infinitePayLink ?? '',
     status: input.status ?? 'available',
     reservedBy: null,
     reservedAt: null,

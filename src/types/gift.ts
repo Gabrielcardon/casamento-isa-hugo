@@ -12,16 +12,16 @@ export interface Gift {
   category: string
   link: string
   /**
-   * Link Mercado Pago deste presente (valor já definido no MP).
+   * Link InfinitePay deste presente (valor já definido no InfinitePay).
    * Vazio = usa o link geral sem valor fixo em wedding.ts
    */
-  mercadoPagoLink: string
+  infinitePayLink: string
   status: GiftStatus
   reservedBy: string | null
   reservedAt: string | null
   /** null enquanto disponível */
   fulfillmentMethod: FulfillmentMethod | null
-  /** Pix ou cartão (MP) — admin confirma o recebimento */
+  /** Pix ou cartão (InfinitePay) — admin confirma o recebimento */
   pixPaid: boolean
   order: number
 }

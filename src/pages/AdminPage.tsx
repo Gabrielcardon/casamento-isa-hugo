@@ -21,7 +21,7 @@ const emptyForm: GiftInput = {
   imageUrl: '',
   category: '',
   link: '',
-  mercadoPagoLink: '',
+  infinitePayLink: '',
   order: 1,
 }
 
@@ -34,8 +34,8 @@ function methodLabel(gift: Gift): string {
   }
   if (gift.fulfillmentMethod === 'card') {
     return gift.pixPaid
-      ? `Cartão (MP) · pago · ${gift.reservedBy ?? '—'}`
-      : `Cartão (MP) · aguardando · ${gift.reservedBy ?? '—'}`
+      ? `Cartão (InfinitePay) · pago · ${gift.reservedBy ?? '—'}`
+      : `Cartão (InfinitePay) · aguardando · ${gift.reservedBy ?? '—'}`
   }
   if (gift.fulfillmentMethod === 'store') {
     return `Presente físico · ${gift.reservedBy ?? '—'}`
@@ -191,7 +191,7 @@ export function AdminPage() {
           </p>
         )}
 
-        {/* Resumo pagamentos (Pix + cartão MP) */}
+        {/* Resumo pagamentos (Pix + cartão InfinitePay) */}
         <section className="grid gap-4 sm:grid-cols-2">
           <div className="border border-champagne/40 bg-champagne/10 px-5 py-4">
             <p className="text-xs uppercase tracking-[0.2em] text-moss">
@@ -200,7 +200,7 @@ export function AdminPage() {
             <p className="mt-1 font-display text-3xl text-forest">
               {paymentPending.length}
             </p>
-            <p className="text-sm text-muted">Pix ou cartão (Mercado Pago)</p>
+            <p className="text-sm text-muted">Pix ou cartão (InfinitePay)</p>
           </div>
           <div className="border border-sage/30 bg-white/50 px-5 py-4">
             <p className="text-xs uppercase tracking-[0.2em] text-moss">
@@ -219,7 +219,7 @@ export function AdminPage() {
               Confirmar pagamentos
             </h2>
             <p className="mt-2 text-sm text-muted">
-              Pix ou cartão (PoC link fixo do MP). Quando o valor chegar, marque
+              Pix ou cartão (PoC link fixo do InfinitePay). Quando o valor chegar, marque
               como pago.
             </p>
             <ul className="mt-6 divide-y divide-sage/25 border border-sage/25">
@@ -295,15 +295,15 @@ export function AdminPage() {
               className="sm:col-span-2"
             />
             <Field
-              label="Link Mercado Pago deste presente (opcional — com valor já definido)"
-              value={form.mercadoPagoLink}
-              onChange={(v) => setForm((f) => ({ ...f, mercadoPagoLink: v }))}
+              label="Link InfinitePay deste presente (opcional — com valor já definido)"
+              value={form.infinitePayLink}
+              onChange={(v) => setForm((f) => ({ ...f, infinitePayLink: v }))}
               className="sm:col-span-2"
-              placeholder="https://link.mercadopago.com.br/..."
+              placeholder="https://link.infinitepay.com/..."
             />
             <p className="text-xs text-muted sm:col-span-2 -mt-2">
               Se ficar vazio, usa o link geral sem valor fixo (
-              casamentohugoeisa ). Crie no MP um link com o valor deste item e
+              casamentohugoeisa ). Crie no InfinitePay um link com o valor deste item e
               cole aqui.
             </p>
             <div className="sm:col-span-2">
@@ -370,17 +370,17 @@ export function AdminPage() {
 }
 
 function GiftAdminRow({ gift }: { gift: Gift }) {
-  const [mpLink, setMpLink] = useState(gift.mercadoPagoLink || '')
+  const [infinitePayLink, setInfinitePayLink] = useState(gift.infinitePayLink || '')
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    setMpLink(gift.mercadoPagoLink || '')
-  }, [gift.mercadoPagoLink])
+    setInfinitePayLink(gift.infinitePayLink || '')
+  }, [gift.infinitePayLink])
 
-  async function saveMpLink() {
+  async function saveInfinitePayLink() {
     setSaving(true)
     try {
-      await updateGift(gift.id, { mercadoPagoLink: mpLink.trim() })
+      await updateGift(gift.id, { infinitePayLink: infinitePayLink.trim() })
     } finally {
       setSaving(false)
     }
@@ -408,10 +408,10 @@ function GiftAdminRow({ gift }: { gift: Gift }) {
               >
                 {gift.pixPaid
                   ? gift.fulfillmentMethod === 'card'
-                    ? 'Cartão MP confirmado'
+                    ? 'Cartão InfinitePay confirmado'
                     : 'Pix confirmado'
                   : gift.fulfillmentMethod === 'card'
-                    ? 'Aguardando pagamento (Mercado Pago)'
+                    ? 'Aguardando pagamento (InfinitePay)'
                     : 'Aguardando confirmação do Pix'}
               </p>
             )}
@@ -462,27 +462,27 @@ function GiftAdminRow({ gift }: { gift: Gift }) {
 
       <div className="border-t border-sage/20 pt-3">
         <label className="text-xs font-medium uppercase tracking-wide text-moss">
-          Link Mercado Pago (valor do produto)
+          Link InfinitePay (valor do produto)
         </label>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row">
           <input
             type="url"
-            value={mpLink}
-            onChange={(e) => setMpLink(e.target.value)}
+            value={infinitePayLink}
+            onChange={(e) => setInfinitePayLink(e.target.value)}
             placeholder="Vazio = usa link geral sem valor fixo"
             className="w-full flex-1 border border-sage/40 px-3 py-2 text-sm outline-none focus:border-moss"
           />
           <button
             type="button"
-            disabled={saving || mpLink.trim() === (gift.mercadoPagoLink || '')}
-            onClick={saveMpLink}
+            disabled={saving || infinitePayLink.trim() === (gift.infinitePayLink || '')}
+            onClick={saveInfinitePayLink}
             className="shrink-0 bg-forest px-4 py-2 text-sm text-linen hover:bg-moss disabled:opacity-40"
           >
             {saving ? 'Salvando…' : 'Salvar link'}
           </button>
         </div>
         <p className="mt-1 text-xs text-muted">
-          {gift.mercadoPagoLink?.startsWith('http')
+          {gift.infinitePayLink?.startsWith('http')
             ? 'Usando link deste presente (com valor).'
             : 'Sem link específico — convidado usa o link geral.'}
         </p>

@@ -1,10 +1,10 @@
 import { useId, useState } from 'react'
-import { hasMercadoPagoLink } from '../config/wedding'
+import { hasInfinitePayLink } from '../config/wedding'
 import type { FulfillmentMethod, Gift } from '../types/gift'
 import {
-  MercadoPagoLinkPanel,
-  openMercadoPagoLink,
-} from './MercadoPagoLinkPanel'
+  InfinitePayLinkPanel,
+  openInfinitePayLink,
+} from './InfinitePayLinkPanel'
 import { PixPayment } from './PixPayment'
 
 interface ReserveModalProps {
@@ -37,8 +37,8 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
         setStep('pix-done')
       } else if (method === 'card') {
         setStep('card-done')
-        if (hasMercadoPagoLink(gift.mercadoPagoLink)) {
-          openMercadoPagoLink(gift.mercadoPagoLink)
+        if (hasInfinitePayLink(gift.infinitePayLink)) {
+          openInfinitePayLink(gift.infinitePayLink)
         }
       } else {
         setStep('store-done')
@@ -131,11 +131,11 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
                     name={`${id}-method`}
                     checked={method === 'card'}
                     onChange={() => setMethod('card')}
-                    title="Cartão via Mercado Pago"
+                    title="Cartão via InfinitePay"
                     description={
-                      gift.mercadoPagoLink?.startsWith('http')
-                        ? 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago, o link ficará disponível após a reserva.'
-                        : 'Envie o valor via cartão de crédito em até 12x pelo Mercado Pago, o link ficará disponível após a reserva.'
+                      gift.infinitePayLink?.startsWith('http')
+                        ? 'Envie o valor via cartão de crédito em até 12x pelo InfinitePay, o link ficará disponível após a reserva.'
+                        : 'Envie o valor via cartão de crédito em até 12x pelo InfinitePay, o link ficará disponível após a reserva.'
                     }
                   />
                 </div>
@@ -152,10 +152,10 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
 
               {method === 'card' && (
                 <div className="border border-sage/25 bg-white/50 p-4">
-                  <MercadoPagoLinkPanel
+                  <InfinitePayLinkPanel
                     amount={gift.price}
                     giftName={gift.name}
-                    giftMercadoPagoLink={gift.mercadoPagoLink}
+                    giftInfinitePayLink={gift.infinitePayLink}
                   />
                 </div>
               )}
@@ -222,7 +222,7 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               Obrigado, {name.trim().split(' ')[0]}!
             </h3>
             <p className="mt-2 text-sm text-muted">
-              O presente está reservado. Finalize o pagamento no Mercado Pago
+              O presente está reservado. Finalize o pagamento no InfinitePay
               com o valor de{' '}
               <strong className="text-forest">
                 {gift.price.toLocaleString('pt-BR', {
@@ -233,10 +233,10 @@ export function ReserveModal({ gift, onClose, onConfirm }: ReserveModalProps) {
               .
             </p>
             <div className="mt-6 border border-sage/25 bg-white/60 p-4">
-              <MercadoPagoLinkPanel
+              <InfinitePayLinkPanel
                 amount={gift.price}
                 giftName={gift.name}
-                giftMercadoPagoLink={gift.mercadoPagoLink}
+                giftInfinitePayLink={gift.infinitePayLink}
               />
             </div>
             <button
