@@ -117,7 +117,7 @@ export function PixPayment({ amount, giftName, compact = false }: PixPaymentProp
         {typeof amount === 'number' && amount > 0
           ? ` (${formatPrice(amount)})`
           : ''}{' '}
-        se o QR Code não trouxer o valor fixo.
+        e realize o pagamento.
       </p>
     </div>
   )
